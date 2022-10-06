@@ -11,13 +11,6 @@ a = mp.Aligner("SARS-CoV-2.fa")
 
 # Count all substitutions (AT, AC, AG, GC, GA, GT, TA, TC, TC, CA, CG, CT) compared to ref for all seqs and put name and
 # number of certain substitutions in new csv file
- = int(input())
-
-def subsitution_count()
-    if refpos = "A"
-        and seqpos ["G""T""C"]
-            "A"=1
-
 
 
 # The sum of each different substitutions divided with the number of unique sequences from the respective dates
