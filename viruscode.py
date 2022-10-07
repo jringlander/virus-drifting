@@ -2,22 +2,22 @@
 from Bio import SeqIO
 from Bio.Align import PairwiseAligner
 
-target = SeqIO.parse("/Users/johanringlander/Desktop/Sv__Sekvensering_tidiga_stammar/14_SE300_DE-20-007850.consensus.fasta", "fasta")
+target = SeqIO.parse("sequence.fasta", "fasta")
 
-queries = {}
-for seq_record in SeqIO.parse("/Users/johanringlander/Downloads/gisaid_hcov-19_2022_10_04_14.fasta", "fasta"):
+queries = SeqIO.parse("gisaid_hcov-19_2022_10_04_14.fasta", "fasta")
+
+for seq_record in SeqIO.parse("gisaid_hcov-19_2022_10_04_14.fasta", "fasta"):
     #print (seq_record.id)
     queries[seq_record.id] = seq_record.seq
 
 for k,v in queries.items():
     # align v to target
-({k})
-aligner = PairwiseAligner()
-aligner.gap_score = -10
-alignments = aligner.align(target, query)
-len(alignments)
-alignment = alignments[0]
-print(alignment)
+    aligner = PairwiseAligner()
+    aligner.gap_score = -10
+    alignments = aligner.align(target, queries)
+    len(alignments)
+    alignment = alignments[0]
+    print(alignment)
 
 # Count all substitutions (AT, AC, AG, GC, GA, GT, TA, TC, TC, CA, CG, CT) compared to ref
 m = alignment.substitutions
