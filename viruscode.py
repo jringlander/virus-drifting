@@ -2,13 +2,12 @@
 from Bio import SeqIO
 from Bio.Align import PairwiseAligner
 
-target = SeqIO.parse("sequence.fasta", "fasta")
+target = {rec.id: rec.seq for rec in SeqIO.parse('sequence.fasta', "fasta")}
+#print to check target
+print(target)
 
-queries = SeqIO.parse("gisaid_hcov-19_2022_10_04_14.fasta", "fasta")
-
-for seq_record in SeqIO.parse("gisaid_hcov-19_2022_10_04_14.fasta", "fasta"):
-    #print (seq_record.id)
-    queries[seq_record.id] = seq_record.seq
+queries = {rec.id: rec.seq for rec in SeqIO.parse('gisaid_hcov-19_2022_10_04_14.fasta', "fasta")}
+print(queries)
 
 for k,v in queries.items():
     # align v to target
