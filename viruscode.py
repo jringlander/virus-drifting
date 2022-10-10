@@ -2,10 +2,12 @@
 # import packages
 from Bio import SeqIO
 import subprocess
+import re
 import matplotlib.pyplot as plt
+import numpy
 
 
-# Align sequences
+# Align query sequences with reference
 subprocess.run('cat sequence.fasta gisaid_hcov-19_2022_10_04_14.fasta > ref_query.fasta | mafft ref_query.fasta > aligned.fasta', shell=True)
 
 # List and dictionary of alignment
@@ -13,7 +15,7 @@ multifasta = list(SeqIO.parse("aligned.fasta", format = 'fasta'))
 
 queries = {}
 for entry in multifasta:
-    queries[entry.id] = entry
+    queries[entry.id] = entry.seq
 
 # Define gaps
 def gapped_pos(seq, pos):
@@ -36,13 +38,12 @@ def get_mutations(initial, variant):
             out.append(nt[0].upper() + str(pos) + nt[1].upper())
     return out
 
-# Print mutations compared to reference
+# Print number of mutations compared to reference and all separate mutations
 for item in queries:
-    print (item + ' '+str(len(get_mutations(queries['NC_045512.2'], queries[item]))))
+    print(get_mutations(queries['NC_045512.2'], queries[item]))
+    print(item + ' '+str(len(get_mutations(queries['NC_045512.2'], queries[item]))))
 
 # Count all substitutions (AT, AC, AG, GC, GA, GT, TA, TC, TC, CA, CG, CT) compared to ref
-for item in queries:
-
 
 # The sum of each different substitutions divided with the number of unique sequences from the respective dates
 
@@ -50,10 +51,19 @@ for item in queries:
 
 # Make graph of substitution frequency of all possible substitutions for all dates
 # matplotlib
-#for y, item in enumerate(queries):
-    #plt.plot((0, len(queries['NC_045512.2'])), (y,y), color = 'lightgrey')
 
+mutations = {}
+for item in queries:
+    mutations[item] = get_mutations(queries['NC_045512.2'], queries[item])
 
+    for y, item in enumerate(queries):
+        plt.plot((0, len(queries['NC_045512.2'])), (y,y), color = 'lightgrey')
+        plt.text(-140, y, item, va = 'center', ha='center')
 
+        for mutation in mutations[item]:
+            pos = int(mutation[1:-1])
+            nt_change = mutation[-1]
+            plt.text(pos, y, nt_change, va = 'center', ha = 'center')
+            plt.savefig('drift.pdf')
 
 
