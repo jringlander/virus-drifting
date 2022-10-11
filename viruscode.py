@@ -17,7 +17,7 @@ queries = {}
 for entry in multifasta:
     queries[entry.id] = entry.seq
 
-# Define gaps
+# Define gaps from alignment
 def gapped_pos(seq, pos):
     no_gap = 0
     gaps = 0
@@ -43,27 +43,29 @@ for item in queries:
     print(get_mutations(queries['NC_045512.2'], queries[item]))
     print(item + ' '+str(len(get_mutations(queries['NC_045512.2'], queries[item]))))
 
+# New dictionary of mutations
+mutations = {}
+for item in queries:
+    mutations[item] = get_mutations(queries['NC_045512.2'], queries[item])
+
+# Make graph of substitution frequency of all possible substitutions for all dates
+plt.figure(figsize = (35,10))
+for y, item in enumerate(queries):
+    plt.plot((0, len(queries['NC_045512.2'])), (y,y), color = 'lightgrey')
+    plt.text(-160, y+1, item, va = 'center', ha='right')
+
+    for mutation in mutations[item]:
+        pos = int(mutation[1:-1])
+        nt_change = mutation[-1]
+        plt.text(pos, y, nt_change, va = 'center', ha = 'center')
+
+    plt.xlim(-300, len(queries['NC_045512.2']) + 100)
+    plt.ylim(0, 4)
+    plt.savefig('drift.pdf')
+
 # Count all substitutions (AT, AC, AG, GC, GA, GT, TA, TC, TC, CA, CG, CT) compared to ref
 
 # The sum of each different substitutions divided with the number of unique sequences from the respective dates
 
 # Substitution frequency of each type of substitutions on each date into csv file
-
-# Make graph of substitution frequency of all possible substitutions for all dates
-# matplotlib
-
-mutations = {}
-for item in queries:
-    mutations[item] = get_mutations(queries['NC_045512.2'], queries[item])
-
-    for y, item in enumerate(queries):
-        plt.plot((0, len(queries['NC_045512.2'])), (y,y), color = 'lightgrey')
-        plt.text(-140, y, item, va = 'center', ha='center')
-
-        for mutation in mutations[item]:
-            pos = int(mutation[1:-1])
-            nt_change = mutation[-1]
-            plt.text(pos, y, nt_change, va = 'center', ha = 'center')
-            plt.savefig('drift.pdf')
-
 
