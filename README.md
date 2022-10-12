@@ -8,12 +8,12 @@ The reference genome 'sequence.fasta' may be changed to other non-segemented vir
 containing other query genomes. The program alings reference and queries and makes an alignment file called
 aligned.fasta. This files is processed and a graph containing all differences is the second output. 
 
-MAFFT installment is required. 
-
-Biopython is required. 
+Requirments: 
+MAFFT aligner. 
+Biopython.  
 
 Git clone the repository to run with testdata.
 Run: python viruscode.py 
 
-Change reference and query genome, the sequence.fasta and are variables and may be changed to your own query. 
+Change reference and query genome: 'sequence.fasta' and gisaid are variables and may be changed to your own query. 
 line : subprocess(cat sequence.fasta gisaid.fasta> ref_query.fasta)
