@@ -2,9 +2,9 @@
 # import packages
 from Bio import SeqIO
 import subprocess
-import re
+import sys
 import matplotlib.pyplot as plt
-import numpy
+
 
 
 # Align query sequences with reference
@@ -39,9 +39,12 @@ def get_mutations(initial, variant):
     return out
 
 # Print number of mutations compared to reference and all separate mutations
+
+f = open('mutations_results.txt', 'w')
 for item in queries:
-    print(get_mutations(queries['NC_045512.2'], queries[item]))
-    print(item + ' '+str(len(get_mutations(queries['NC_045512.2'], queries[item]))))
+    print(item + str(get_mutations(queries['NC_045512.2'], queries[item])), file = f)
+    print(item + ' '+str(len(get_mutations(queries['NC_045512.2'], queries[item]))), file = f)
+f.close()
 
 # New dictionary of mutations
 mutations = {}
@@ -49,10 +52,10 @@ for item in queries:
     mutations[item] = get_mutations(queries['NC_045512.2'], queries[item])
 
 # Make graph of substitution frequency of all possible substitutions for all dates
-plt.figure(figsize = (35,10))
+plt.figure(figsize = (45,15))
 for y, item in enumerate(queries):
     plt.plot((0, len(queries['NC_045512.2'])), (y,y), color = 'lightgrey')
-    plt.text(-160, y+1, item, va = 'center', ha='right')
+    plt.text(-160, y, item, va = 'center', ha='right')
 
     for mutation in mutations[item]:
         pos = int(mutation[1:-1])
