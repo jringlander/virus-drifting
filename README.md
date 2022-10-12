@@ -16,4 +16,4 @@ Git clone the repository to run with testdata.
 Run: python viruscode.py 
 
 Change reference and query genome: The files used in the current script, 'sequence.fasta' and 'gisaid_hcov-19_2022_10_04_14.fasta', are variable and may be changed to your own reference and query. 
-line : subprocess(cat sequence.fasta gisaid.fasta> ref_query.fasta)
+The input files are found in line 11: subprocess(cat sequence.fasta gisaid.fasta> ref_query.fasta 
